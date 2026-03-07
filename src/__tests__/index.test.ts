@@ -39,6 +39,11 @@ describe('clipboard', () => {
       await copyText('hello world');
       expect(mockClipboard.writeText).toHaveBeenCalledWith('hello world');
     });
+
+    it('should throw error when writeText fails', async () => {
+      mockClipboard.writeText.mockRejectedValue(new Error('Copy failed'));
+      await expect(copyText('fail')).rejects.toThrow('Copy failed');
+    });
   });
 
   describe('pasteText', () => {
@@ -46,6 +51,12 @@ describe('clipboard', () => {
       const text = await pasteText();
       expect(text).toBe('test text');
       expect(mockClipboard.readText).toHaveBeenCalled();
+    });
+
+    it('should return empty string when clipboard is empty', async () => {
+      mockClipboard.readText.mockResolvedValue('');
+      const text = await pasteText();
+      expect(text).toBe('');
     });
   });
 
@@ -57,6 +68,19 @@ describe('clipboard', () => {
       
       await copyHtml('<b>test</b>');
       expect(mockClipboard.write).toHaveBeenCalled();
+    });
+
+    it('should use correct types for HTML copy', async () => {
+      let createdItems: Record<string, Blob>[] = [];
+      vi.stubGlobal('ClipboardItem', class {
+        constructor(public items: Record<string, Blob>) {
+          createdItems.push(items);
+        }
+      });
+      
+      await copyHtml('<div>test</div>');
+      expect(createdItems[0]).toHaveProperty('text/html');
+      expect(createdItems[0]).toHaveProperty('text/plain');
     });
   });
 
@@ -70,6 +94,15 @@ describe('clipboard', () => {
       await copyImage(mockBlob);
       expect(mockClipboard.write).toHaveBeenCalled();
     });
+
+    it('should throw error when image copy fails', async () => {
+      vi.stubGlobal('ClipboardItem', class {
+        constructor(public items: Record<string, Blob>) {}
+      });
+      mockClipboard.write.mockRejectedValue(new Error('Image copy failed'));
+      const mockBlob = new Blob(['data'], { type: 'image/png' });
+      await expect(copyImage(mockBlob)).rejects.toThrow('Image copy failed');
+    });
   });
 
   describe('readClipboard', () => {
@@ -77,6 +110,13 @@ describe('clipboard', () => {
       const items = await readClipboard();
       expect(items).toEqual([]);
       expect(mockClipboard.read).toHaveBeenCalled();
+    });
+
+    it('should return multiple items if available', async () => {
+      const mockItem = {} as ClipboardItem;
+      mockClipboard.read.mockResolvedValue([mockItem, mockItem]);
+      const items = await readClipboard();
+      expect(items).toHaveLength(2);
     });
   });
 
@@ -144,6 +184,15 @@ describe('clipboard', () => {
       
       expect(result).toBe(false);
       expect(mockBody.removeChild).toHaveBeenCalled();
+    });
+
+    it('should handle document.body being null gracefully', () => {
+      vi.stubGlobal('document', {
+        createElement: vi.fn(),
+        body: null
+      });
+      
+      expect(() => copyWithFallback('test')).toThrow();
     });
   });
 });
