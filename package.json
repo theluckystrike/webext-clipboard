@@ -14,17 +14,25 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/theluckystrike/webext-clipboard.git"
   },
-  "keywords": ["clipboard", "chrome-extension", "webextension", "types"],
+  "keywords": [
+    "clipboard",
+    "chrome-extension",
+    "webextension",
+    "types"
+  ],
   "author": "",
   "license": "MIT",
   "bugs": {
