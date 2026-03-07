@@ -1,0 +1,39 @@
+{
+  "name": "@anthropic/webext-clipboard",
+  "version": "1.0.0",
+  "description": "Typed clipboard helpers for Chrome extensions",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theluckystrike/webext-clipboard.git"
+  },
+  "keywords": ["clipboard", "chrome-extension", "webextension", "types"],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theluckystrike/webext-clipboard/issues"
+  },
+  "homepage": "https://github.com/theluckystrike/webext-clipboard#readme",
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
