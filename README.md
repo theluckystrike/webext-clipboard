@@ -1,26 +1,26 @@
 [![CI](https://github.com/theluckystrike/webext-clipboard/actions/workflows/ci.yml/badge.svg)](https://github.com/theluckystrike/webext-clipboard/actions)
-[![npm](https://img.shields.io/npm/v/@anthropic/webext-clipboard)](https://www.npmjs.com/package/@anthropic/webext-clipboard)
+[![npm](https://img.shields.io/npm/v/@theluckystrike/webext-clipboard)](https://www.npmjs.com/package/@theluckystrike/webext-clipboard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
-# @anthropic/webext-clipboard
+# @theluckystrike/webext-clipboard
 
 Typed clipboard helpers for Chrome extensions. Part of @zovo/webext.
 
 ## Installation
 
 ```bash
-npm install @anthropic/webext-clipboard
+npm install @theluckystrike/webext-clipboard
 # or
-pnpm add @anthropic/webext-clipboard
+pnpm add @theluckystrike/webext-clipboard
 # or
-yarn add @anthropic/webext-clipboard
+yarn add @theluckystrike/webext-clipboard
 ```
 
 ## Usage
 
 ```typescript
-import { copyText, pasteText, copyHtml, copyImage, readClipboard, copyWithFallback } from '@anthropic/webext-clipboard';
+import { copyText, pasteText, copyHtml, copyImage, readClipboard, copyWithFallback } from '@theluckystrike/webext-clipboard';
 
 // Copy plain text
 await copyText('Hello, World!');
