@@ -6,11 +6,20 @@
 
 # @theluckystrike/webext-clipboard
 
-Typed clipboard helpers for Chrome extensions. Part of the zovo.webext ecosystem.
+Typed clipboard helpers for Chrome extensions — copy text, HTML, and images with context-aware fallbacks. Part of @zovo/webext.
 
 ## Description
 
-A TypeScript-first library that provides type-safe clipboard operations for Chrome extensions. Supports copying text, HTML, and images, with a fallback method for content scripts where `navigator.clipboard` may not be available.
+A TypeScript-first library that provides type-safe clipboard operations for Chrome extensions. Supports copying text, HTML, and images, with a fallback method for content scripts where `navigator.clipboard` may not be available due to extension context isolation.
+
+## Features
+
+- **📝 Copy Text** — Copy plain text to clipboard with `copyText()`
+- **📋 Read Text** — Paste text from clipboard with `pasteText()`
+- **🌐 Copy HTML** — Copy rich HTML content with `copyHtml()` (preserves formatting)
+- **🖼️ Copy Images** — Copy images directly to clipboard with `copyImage()`
+- **📦 Read All Items** — Read any clipboard content with `readClipboard()`
+- **🔄 Context Fallback** — Works in content scripts with `copyWithFallback()`
 
 ## Installation
 
@@ -22,7 +31,7 @@ pnpm add @theluckystrike/webext-clipboard
 yarn add @theluckystrike/webext-clipboard
 ```
 
-## Usage
+## Quick Start
 
 ```typescript
 import { copyText, pasteText, copyHtml, copyImage, readClipboard, copyWithFallback } from '@theluckystrike/webext-clipboard';
@@ -47,6 +56,95 @@ const items = await readClipboard();
 // Fallback for content scripts (when navigator.clipboard is unavailable)
 const success = copyWithFallback('Fallback copy');
 ```
+
+## Advanced Usage
+
+### Copying Canvas Content
+
+To copy a canvas element as an image:
+
+```typescript
+const canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
+canvas.toBlob(async (blob) => {
+  if (blob) {
+    await copyImage(blob);
+    console.log('Canvas copied to clipboard!');
+  }
+});
+```
+
+### Monitoring Clipboard Changes
+
+Since the Clipboard API doesn't emit events, you can poll for changes in your extension:
+
+```typescript
+let lastClipboardText = '';
+
+async function checkClipboard() {
+  try {
+    const text = await pasteText();
+    if (text !== lastClipboardText) {
+      console.log('Clipboard changed:', text);
+      lastClipboardText = text;
+    }
+  } catch (e) {
+    // Clipboard access denied or empty
+  }
+}
+
+// Check every 2 seconds
+setInterval(checkClipboard, 2000);
+```
+
+### Context Fallbacks
+
+In Chrome extensions, `navigator.clipboard` is only available in certain contexts:
+
+| Context | `navigator.clipboard` | Use Fallback |
+|---------|---------------------|--------------|
+| Popup | ✅ Available | Not needed |
+| Options Page | ✅ Available | Not needed |
+| Background Script | ✅ Available | Not needed |
+| Content Script | ⚠️ Limited | Sometimes required |
+
+The `copyWithFallback()` function uses `document.execCommand('copy')` as a reliable fallback for content scripts:
+
+```typescript
+// content-script.ts
+import { copyWithFallback } from '@theluckystrike/webext-clipboard';
+
+// This works in all contexts
+document.addEventListener('mouseup', () => {
+  const selection = window.getSelection()?.toString();
+  if (selection) {
+    copyWithFallback(selection);
+  }
+});
+```
+
+## Context Limitations
+
+When working with clipboard in Chrome extensions, be aware of these limitations:
+
+1. **Permissions Required** — Add `clipboardRead` and/or `clipboardWrite` to your manifest
+2. **Context Isolation** — Content scripts may have limited clipboard access
+3. **User Gesture** — Some browsers require user interaction before clipboard operations
+4. **HTTPS Required** — Clipboard API requires secure contexts
+
+### Manifest Permissions
+
+Add the required permissions to your `manifest.json`:
+
+```json
+{
+  "permissions": [
+    "clipboardRead",
+    "clipboardWrite"
+  ]
+}
+```
+
+For Manifest V3, you may also need to declare host permissions if reading from specific origins.
 
 ## API Reference
 
@@ -80,7 +178,7 @@ console.log(text); // "Hello, World!"
 
 ### `copyHtml(html: string): Promise<void>`
 
-Copies HTML content to the clipboard using `ClipboardItem`. Also sets plain text fallback.
+Copies HTML content to the clipboard using `ClipboardItem`. Also sets plain text fallback for compatibility.
 
 **Parameters:**
 - `html` - The HTML string to copy
@@ -147,6 +245,33 @@ if (success) {
 
 ---
 
+## Permissions
+
+This library requires the following manifest permissions:
+
+| Permission | Required For |
+|------------|--------------|
+| `clipboardWrite` | `copyText`, `copyHtml`, `copyImage` |
+| `clipboardRead` | `pasteText`, `readClipboard` |
+
+Add to your `manifest.json`:
+
+```json
+{
+  "permissions": [
+    "clipboardRead",
+    "clipboardWrite"
+  ]
+}
+```
+
+## Requirements
+
+- TypeScript 5.0+
+- Node.js 18+
+- Chrome 99+ (for ClipboardItem API)
+- Extension must have clipboard permissions where needed
+
 ## Project Structure
 
 ```
@@ -159,17 +284,20 @@ webext-clipboard/
 │   └── workflows/
 │       └── ci.yml        # CI workflow
 ├── CHANGELOG.md          # Version history
+├── CONTRIBUTING.md       # Contribution guide
 ├── LICENSE               # MIT license
 ├── package.json          # Package configuration
 ├── tsconfig.json         # TypeScript configuration
 └── README.md             # This file
 ```
 
-## Requirements
+## Related Packages
 
-- TypeScript 5.0+
-- Chrome 99+ (for ClipboardItem API)
-- Extension must have clipboard permissions where needed
+This library is part of the @zovo/webext ecosystem:
+
+- [@theluckystrike/webext-context-menu](/) — Typed context menu helpers
+- [@theluckystrike/webext-storage](/) — Type-safe storage operations
+- [@theluckystrike/webext-tabs](/] — Tab management utilities
 
 ## License
 
