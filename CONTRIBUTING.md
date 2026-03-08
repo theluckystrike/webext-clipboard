@@ -1,57 +1,84 @@
 # Contributing to @theluckystrike/webext-clipboard
 
-Thank you for your interest in contributing!
+Thank you for your interest in contributing! This guide will help you get started.
 
 ## Development Setup
 
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Fork and Clone
+
+1. Fork the repository on GitHub
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
+   cd webext-clipboard
+   ```
+
+### Install Dependencies
+
 ```bash
-# Clone the repository
-git clone https://github.com/theluckystrike/webext-clipboard.git
-cd webext-clipboard
-
-# Install dependencies (using pnpm)
 pnpm install
+```
 
-# Build the project
-pnpm run build
+### Create a Branch
 
-# Run tests
+Create a feature branch for your changes:
+
+```bash
+git checkout -b feature/your-feature-name
+# or
+git checkout -b fix/bug-description
+```
+
+## Development Workflow
+
+### Running Tests
+
+```bash
 pnpm test
 ```
+
+This runs the test suite with Vitest. All tests must pass before submitting a PR.
+
+### Building
+
+```bash
+pnpm build
+```
+
+This builds the TypeScript source to JavaScript using tsup.
 
 ## Code Style
 
-This project uses TypeScript with default settings. Please ensure:
+- Use TypeScript for all new code
+- Follow existing code conventions
+- Add JSDoc comments for public APIs
+- Ensure all tests pass before submitting
 
-- TypeScript types are properly defined
-- Functions include JSDoc comments
-- Code is formatted consistently with the existing style
+## Submitting a Pull Request
 
-## Testing
+1. Push your branch to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-Write tests for any new functionality. Tests are located in `src/__tests__/`.
+2. Open a Pull Request against the `main` branch
 
-```bash
-pnpm test
-```
+3. Fill out the PR template with:
+   - Description of changes
+   - Related issue numbers (if applicable)
+   - Testing performed
 
-## Pull Request Process
+4. Wait for review and address any feedback
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Make your changes
-4. Run tests (`pnpm test`) and ensure they pass
-5. Commit with clear messages
-6. Push to your fork
-7. Open a pull request
+## Code of Conduct
 
-## Commit Messages
+Be respectful and constructive. We welcome contributions from everyone.
 
-Use clear, descriptive commit messages:
-- `feat: add copyImage function`
-- `fix: resolve clipboard fallback issue`
-- `docs: update README with examples`
+## Questions?
 
-## License
-
-By contributing, you agree that your contributions will be licensed under the MIT License.
+If you have questions, feel free to open an issue for discussion before submitting a PR.
