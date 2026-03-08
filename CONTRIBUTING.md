@@ -9,14 +9,14 @@ Thank you for your interest in contributing!
 git clone https://github.com/theluckystrike/webext-clipboard.git
 cd webext-clipboard
 
-# Install dependencies
-npm install
+# Install dependencies (using pnpm)
+pnpm install
 
 # Build the project
-npm run build
+pnpm run build
 
 # Run tests
-npm test
+pnpm test
 ```
 
 ## Code Style
@@ -32,7 +32,7 @@ This project uses TypeScript with default settings. Please ensure:
 Write tests for any new functionality. Tests are located in `src/__tests__/`.
 
 ```bash
-npm test
+pnpm test
 ```
 
 ## Pull Request Process
@@ -40,7 +40,7 @@ npm test
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
 3. Make your changes
-4. Run tests and ensure they pass
+4. Run tests (`pnpm test`) and ensure they pass
 5. Commit with clear messages
 6. Push to your fork
 7. Open a pull request
