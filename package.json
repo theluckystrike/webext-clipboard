@@ -1,7 +1,7 @@
 {
   "name": "@anthropic/webext-clipboard",
   "version": "1.0.0",
-  "description": "Typed clipboard helpers for Chrome extensions",
+  "description": "Typed clipboard helpers for Chrome extensions. Part of @zovo/webext.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -28,10 +28,14 @@
     "url": "git+https://github.com/theluckystrike/webext-clipboard.git"
   },
   "keywords": [
-    "clipboard",
     "chrome-extension",
+    "clipboard",
+    "copy",
+    "paste",
+    "typescript",
     "webextension",
-    "types"
+    "browser-extension",
+    "manifest-v3"
   ],
   "author": "",
   "license": "MIT",
