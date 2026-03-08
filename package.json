@@ -1,7 +1,7 @@
 {
   "name": "@theluckystrike/webext-clipboard",
   "version": "1.0.0",
-  "description": "Typed clipboard helpers for Chrome extensions",
+  "description": "Typed clipboard helpers for Chrome extensions — copy text, HTML, and images with context-aware fallbacks. Part of @zovo/webext.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
