@@ -34,19 +34,18 @@
     "webextension",
     "webext",
     "zovo",
-    "copy",
-    "paste",
+    "copy-paste",
     "types"
   ],
-  "author": "",
+  "author": "theluckystrike",
   "license": "MIT",
-  "engines": {
-    "node": ">=18"
-  },
   "bugs": {
     "url": "https://github.com/theluckystrike/webext-clipboard/issues"
   },
   "homepage": "https://github.com/theluckystrike/webext-clipboard#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",

@@ -1,42 +1,80 @@
 # Contributing to @theluckystrike/webext-clipboard
 
-Thank you for your interest in contributing!
+Thank you for your interest in contributing! This guide will help you get started.
 
 ## Getting Started
 
-1. **Fork** the repository
-2. **Clone** your fork:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
-   cd webext-clipboard
-   ```
+### 1. Fork the Repository
 
-3. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
+Click the "Fork" button on the [GitHub repository](https://github.com/theluckystrike/webext-clipboard) to create your own copy.
 
-4. **Create a feature branch**:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+### 2. Clone Your Fork
+
+```bash
+git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
+cd webext-clipboard
+```
+
+### 3. Install Dependencies
+
+This project uses pnpm for package management:
+
+```bash
+npm install -g pnpm  # if not already installed
+pnpm install
+```
+
+### 4. Create a Feature Branch
+
+Create a new branch for your changes:
+
+```bash
+git checkout -b feature/your-feature-name
+# or
+git checkout -b fix/bug-description
+```
 
 ## Development
 
-```bash
-# Run tests
-pnpm test
+### Building
 
-# Build the package
+```bash
 pnpm build
 ```
 
-## Pull Requests
+### Testing
 
-1. Ensure all tests pass before submitting
-2. Follow the existing code style
-3. Update documentation as needed
-4. Provide a clear description of your changes
+```bash
+pnpm test
+```
+
+## Making Changes
+
+1. Make your changes in your feature branch
+2. Test your changes with `pnpm test`
+3. Commit with a clear commit message
+4. Push to your fork
+
+## Submitting a Pull Request
+
+1. Push your branch to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+2. Open a Pull Request against the `main` branch of the original repository
+
+3. Fill in the PR template with:
+   - A clear description of your changes
+   - Any related issues
+   - Testing steps
+
+## Code Style
+
+- Use TypeScript with strict type checking
+- Follow existing code formatting
+- Add JSDoc comments for public APIs
+- Include type definitions for all exports
 
 ## License
 
