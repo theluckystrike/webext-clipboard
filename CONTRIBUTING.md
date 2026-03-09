@@ -1,27 +1,31 @@
 # Contributing to @theluckystrike/webext-clipboard
 
-Thank you for your interest in contributing! This library is part of the @zovo/webext ecosystem and provides typed clipboard helpers for Chrome extensions.
+Thank you for your interest in contributing! This guide will help you get started.
 
-## Development Workflow
+## Getting Started
 
-### 1. Fork and Clone
+### Fork the Repository
 
-Fork this repository and clone your fork:
+1. Click the **Fork** button on the [repository page](https://github.com/theluckystrike/webext-clipboard)
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
+   cd webext-clipboard
+   ```
 
-```bash
-git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
-cd webext-clipboard
-```
-
-### 2. Install Dependencies
+### Install Dependencies
 
 This project uses pnpm for package management:
 
 ```bash
+# Install pnpm if you haven't already
+npm install -g pnpm
+
+# Install dependencies
 pnpm install
 ```
 
-### 3. Create a Feature Branch
+### Create a Feature Branch
 
 Create a new branch for your changes:
 
@@ -31,50 +35,57 @@ git checkout -b feature/your-feature-name
 git checkout -b fix/bug-description
 ```
 
-### 4. Make Changes
+### Development
 
-Make your changes to the source code in `src/index.ts`. This project uses TypeScript.
-
-### 5. Run Tests
-
-Run the test suite to ensure your changes don't break existing functionality:
-
-```bash
-pnpm test
-```
-
-### 6. Build the Project
-
-Build the TypeScript to ensure it compiles correctly:
+Run the build to compile TypeScript:
 
 ```bash
 pnpm build
 ```
 
-### 7. Commit and Push
-
-Commit your changes with a descriptive message:
+Run tests:
 
 ```bash
-git add .
-git commit -m "feat: add new feature or fix description"
-git push origin your-branch-name
+pnpm test
 ```
 
-### 8. Open a Pull Request
+### Making Changes
 
-Open a pull request against the `main` branch of the original repository. Include:
+1. Make your changes in the `src/` directory
+2. Add or update tests in `src/__tests__/`
+3. Ensure the build passes and all tests pass
 
-- A clear description of what your changes do
-- Any relevant issue numbers
-- A summary of testing performed
+### Submitting a Pull Request
+
+1. Commit your changes with a descriptive message:
+   ```bash
+   git add .
+   git commit -m "feat: add new clipboard function"
+   ```
+
+2. Push to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+3. Open a Pull Request against the `main` branch of the original repository
+
+4. Fill out the PR template with:
+   - Description of changes
+   - Related issues (if any)
+   - Testing performed
 
 ## Code Style
 
-- Use TypeScript for all new code
-- Follow existing code patterns in `src/index.ts`
+- Use TypeScript with strict mode
+- Follow existing code patterns
 - Add JSDoc comments for public APIs
+- Ensure type safety
 
-## License
+## Questions?
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+If you have questions, feel free to open an issue or reach out through the repository.
+
+---
+
+Built at [zovo.one](https://zovo.one) by [theluckystrike](https://github.com/theluckystrike)

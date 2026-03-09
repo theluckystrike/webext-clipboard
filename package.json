@@ -29,13 +29,13 @@
     "url": "git+https://github.com/theluckystrike/webext-clipboard.git"
   },
   "keywords": [
-    "clipboard",
     "chrome-extension",
+    "clipboard",
     "webextension",
-    "types",
-    "copy",
-    "paste",
-    "navigator"
+    "webext",
+    "zovo",
+    "typescript",
+    "copy-paste"
   ],
   "author": "theluckystrike",
   "license": "MIT",
