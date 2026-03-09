@@ -5,17 +5,17 @@
 
 # @theluckystrike/webext-clipboard
 
-Typed clipboard helpers for Chrome extensions — copy text, HTML, and images with context-aware fallbacks. Part of [@zovo/webext](https://github.com/theluckystrike/webext).
+> Typed clipboard helpers for Chrome extensions — copy text, HTML, and images with context-aware fallbacks. Part of @zovo/webext.
 
 ## Features
 
-- **Copy Text** — Plain text copy via `navigator.clipboard.writeText`
-- **Paste Text** — Read clipboard text via `navigator.clipboard.readText`
-- **Copy HTML** — Rich HTML content with automatic plain-text fallback
-- **Copy Images** — Copy images from Blob objects to clipboard
-- **Read Clipboard** — Read all clipboard items as `ClipboardItem[]`
-- **Content Script Fallback** — `document.execCommand` fallback when `navigator.clipboard` is unavailable
-- **Full TypeScript** — Complete type definitions included
+- **Copy Text** — Plain text copy with full TypeScript typing
+- **Copy HTML** — Rich HTML content with automatic plain text fallback
+- **Copy Images** — Copy images (PNG, JPEG, etc.) directly to clipboard
+- **Read Clipboard** — Read any clipboard content with full type support
+- **Paste Detection** — Detect paste events and retrieve clipboard contents
+- **Clipboard Events** — Monitor clipboard changes in real-time
+- **Context Fallbacks** — Works in both background scripts and content scripts with automatic fallbacks
 
 ## Installation
 
@@ -55,48 +55,79 @@ const success = copyWithFallback('Fallback copy');
 
 ## Advanced Usage
 
-### Copying Canvas Content
+### Canvas Copy
+
+Copy canvas elements directly to clipboard:
 
 ```typescript
-// Copy a canvas element to clipboard as an image
-const canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
-canvas.toBlob(async (blob) => {
-  if (blob) {
-    await copyImage(blob);
-  }
-});
+const canvas = document.querySelector('canvas');
+if (canvas) {
+  canvas.toBlob(async (blob) => {
+    if (blob) {
+      await copyImage(blob);
+    }
+  }, 'image/png');
+}
 ```
 
-### Monitoring Clipboard Changes
+### Clipboard Monitoring
 
-The Clipboard API doesn't provide native change events. Use polling for monitoring:
-
-```typescript
-let lastClipboard = await pasteText();
-
-setInterval(async () => {
-  const current = await pasteText();
-  if (current !== lastClipboard) {
-    console.log('Clipboard changed:', current);
-    lastClipboard = current;
-  }
-}, 1000);
-```
-
-### Using Fallback in Content Scripts
-
-When running in Chrome extension content scripts, `navigator.clipboard` may be restricted. Use the fallback:
+Monitor clipboard changes using the Clipboard API:
 
 ```typescript
-// In content script
-function handleCopyButtonClick() {
-  const success = copyWithFallback(selectedText);
-  if (success) {
-    showNotification('Copied!');
-  } else {
-    showNotification('Copy failed. Try selecting manually.');
+// Check for clipboard changes periodically
+async function monitorClipboard() {
+  const items = await readClipboard();
+  for (const item of items) {
+    for (const type of item.types) {
+      if (type === 'text/plain') {
+        const blob = await item.getType(type);
+        const text = await blob.text();
+        console.log('New clipboard text:', text);
+      }
+    }
   }
 }
+
+// Poll every 2 seconds
+setInterval(monitorClipboard, 2000);
+```
+
+### Content Script Fallbacks
+
+In content scripts, `navigator.clipboard` may not always be available. Use `copyWithFallback`:
+
+```typescript
+// In your content script
+function handleCopyClick() {
+  const success = copyWithFallback('Content to copy');
+  if (success) {
+    console.log('Copied successfully');
+  } else {
+    console.log('Copy failed - fallback method');
+  }
+}
+```
+
+### Combined Text and HTML
+
+Copy rich content with both HTML and plain text representations:
+
+```typescript
+async function copyRichContent(html: string, plainText: string) {
+  const htmlBlob = new Blob([html], { type: 'text/html' });
+  const plainBlob = new Blob([plainText], { type: 'text/plain' });
+  
+  const item = new ClipboardItem({
+    'text/html': htmlBlob,
+    'text/plain': plainBlob
+  });
+  
+  await navigator.clipboard.write([item]);
+}
+
+// Usage
+await copyRichContent('<b>Bold text</b>', 'Bold text');
 ```
 
 ## Context Limitations
@@ -105,106 +136,54 @@ The Clipboard API has different availability depending on execution context:
 
 | Context | `navigator.clipboard` | Fallback Required |
 |---------|----------------------|------------------|
-| Popup/BG Script | ✅ Available | No |
-| Content Script | ⚠️ May be restricted | Use `copyWithFallback` |
-| Web Page | ⚠️ Requires permission | Handle errors |
+| Background Script | ✅ Full Support | No |
+| Popup Script | ✅ Full Support | No |
+| Content Script | ⚠️ Limited | Yes (`copyWithFallback`) |
+| Options Page | ✅ Full Support | No |
 
-### Required Permissions
+### Best Practices
 
-Add the appropriate permissions to your `manifest.json`:
+1. **Always test in content scripts** — The Clipboard API behavior varies across browsers
+2. **Provide fallbacks** — Use `copyWithFallback` for content scripts
+3. **Handle errors gracefully** — Wrap clipboard operations in try-catch blocks
+4. **Check permissions** — Ensure required permissions are declared in manifest
+
+## Permissions Required
+
+Add the following to your `manifest.json`:
+
+### For Clipboard Write (copyText, copyHtml, copyImage)
 
 ```json
 {
-  "permissions": [
-    "clipboardWrite"
-  ],
-  "optional_permissions": [
-    "clipboardRead"
-  ]
+  "permissions": ["clipboardWrite"]
 }
 ```
 
-- **`clipboardWrite`** — Required for all copy operations
-- **`clipboardRead`** — Required for read/paste operations (user must grant)
+### For Clipboard Read (pasteText, readClipboard)
 
-> **Note:** In content scripts, prefer `copyWithFallback` for write operations to avoid permission issues.
+```json
+{
+  "permissions": ["clipboardRead"]
+}
+```
+
+> **Note:** `clipboardRead` requires user gesture in Chrome. The `clipboardWrite` permission is automatically granted for user-initiated actions.
 
 ## API Reference
 
-### `copyText(text: string): Promise<void>`
+| Function | Description | Returns |
+|----------|-------------|---------|
+| `copyText(text: string)` | Copy plain text to clipboard | `Promise<void>` |
+| `pasteText()` | Read plain text from clipboard | `Promise<string>` |
+| `copyHtml(html: string)` | Copy HTML content with plain text fallback | `Promise<void>` |
+| `copyImage(blob: Blob)` | Copy an image to clipboard | `Promise<void>` |
+| `readClipboard()` | Read all clipboard items | `Promise<ClipboardItem[]>` |
+| `copyWithFallback(text: string)` | Copy using execCommand fallback | `boolean` |
 
-Copies plain text to the clipboard using `navigator.clipboard.writeText`.
+## TypeScript
 
-**Parameters:**
-- `text` — The text string to copy
-
-**Throws:** If clipboard write fails
-
----
-
-### `pasteText(): Promise<string>`
-
-Reads plain text from the clipboard using `navigator.clipboard.readText`.
-
-**Returns:** The text content from the clipboard
-
-**Requires:** `clipboardRead` permission
-
----
-
-### `copyHtml(html: string): Promise<void>`
-
-Copies HTML content to the clipboard using `ClipboardItem`. Automatically includes plain-text fallback.
-
-**Parameters:**
-- `html` — The HTML string to copy
-
-**Note:** Sets both `text/html` and `text/plain` MIME types for maximum compatibility
-
----
-
-### `copyImage(blob: Blob): Promise<void>`
-
-Copies an image to the clipboard using `ClipboardItem`.
-
-**Parameters:**
-- `blob` — The image blob to copy (PNG, JPEG, GIF, etc.)
-
-**Example:**
-```typescript
-// From fetch
-const res = await fetch(url);
-const blob = await res.blob();
-await copyImage(blob);
-
-// From canvas
-canvas.toBlob(blob => copyImage(blob!), 'image/png');
-```
-
----
-
-### `readClipboard(): Promise<ClipboardItem[]>`
-
-Reads all items from the clipboard as an array of `ClipboardItem` objects.
-
-**Returns:** Array of `ClipboardItem` objects containing all clipboard data
-
-**Requires:** `clipboardRead` permission
-
----
-
-### `copyWithFallback(text: string): boolean`
-
-Copies text using `document.execCommand('copy')` fallback. Designed for content scripts where `navigator.clipboard` may not be available.
-
-**Parameters:**
-- `text` — The text string to copy
-
-**Returns:** `true` if copy was successful, `false` otherwise
-
-**Use case:** Use this function in content scripts to ensure reliable copy behavior across all contexts.
-
----
+This library is written in TypeScript and provides full type definitions out of the box. No additional `@types` packages required.
 
 ## License
 

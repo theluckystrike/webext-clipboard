@@ -2,31 +2,31 @@
 
 Thank you for your interest in contributing! This guide will help you get started.
 
-## Getting Started
+## Development Setup
 
-### 1. Fork the Repository
+### Prerequisites
 
-Click the "Fork" button on the [GitHub repository](https://github.com/theluckystrike/webext-clipboard) to create your own copy.
+- Node.js 18+
+- pnpm (recommended) or npm
 
-### 2. Clone Your Fork
+### Fork and Clone
+
+1. Fork the repository on GitHub
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
+   cd webext-clipboard
+   ```
+
+### Install Dependencies
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
-cd webext-clipboard
-```
-
-### 3. Install Dependencies
-
-This project uses pnpm for package management:
-
-```bash
-npm install -g pnpm  # if not already installed
 pnpm install
 ```
 
-### 4. Create a Feature Branch
+### Create a Branch
 
-Create a new branch for your changes:
+Create a feature branch for your changes:
 
 ```bash
 git checkout -b feature/your-feature-name
@@ -34,7 +34,15 @@ git checkout -b feature/your-feature-name
 git checkout -b fix/bug-description
 ```
 
-## Development
+## Development Workflow
+
+### Running Tests
+
+```bash
+pnpm test
+```
+
+This runs the test suite with Vitest. All tests must pass before submitting a PR.
 
 ### Building
 
@@ -42,18 +50,14 @@ git checkout -b fix/bug-description
 pnpm build
 ```
 
-### Testing
+This builds the TypeScript source to JavaScript using tsup.
 
-```bash
-pnpm test
-```
+## Code Style
 
-## Making Changes
-
-1. Make your changes in your feature branch
-2. Test your changes with `pnpm test`
-3. Commit with a clear commit message
-4. Push to your fork
+- Use TypeScript for all new code
+- Follow existing code conventions
+- Add JSDoc comments for public APIs
+- Ensure all tests pass before submitting
 
 ## Submitting a Pull Request
 
@@ -62,20 +66,19 @@ pnpm test
    git push origin feature/your-feature-name
    ```
 
-2. Open a Pull Request against the `main` branch of the original repository
+2. Open a Pull Request against the `main` branch
 
-3. Fill in the PR template with:
-   - A clear description of your changes
-   - Any related issues
-   - Testing steps
+3. Fill out the PR template with:
+   - Description of changes
+   - Related issue numbers (if applicable)
+   - Testing performed
 
-## Code Style
+4. Wait for review and address any feedback
 
-- Use TypeScript with strict type checking
-- Follow existing code formatting
-- Add JSDoc comments for public APIs
-- Include type definitions for all exports
+## Code of Conduct
 
-## License
+Be respectful and constructive. We welcome contributions from everyone.
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+## Questions?
+
+If you have questions, feel free to open an issue for discussion before submitting a PR.

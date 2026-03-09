@@ -32,12 +32,10 @@
     "clipboard",
     "chrome-extension",
     "webextension",
-    "webext",
-    "zovo",
-    "copy-paste",
+    "typescript",
     "types"
   ],
-  "author": "theluckystrike",
+  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/theluckystrike/webext-clipboard/issues"
