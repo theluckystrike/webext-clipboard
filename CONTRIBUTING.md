@@ -1,91 +1,43 @@
 # Contributing to @theluckystrike/webext-clipboard
 
-Thank you for your interest in contributing! This guide will help you get started.
+Thank you for your interest in contributing!
 
 ## Getting Started
 
-### Fork the Repository
-
-1. Click the **Fork** button on the [repository page](https://github.com/theluckystrike/webext-clipboard)
-2. Clone your fork:
+1. **Fork** the repository
+2. **Clone** your fork:
    ```bash
    git clone https://github.com/YOUR_USERNAME/webext-clipboard.git
    cd webext-clipboard
    ```
 
-### Install Dependencies
+3. **Install dependencies**:
+   ```bash
+   pnpm install
+   ```
 
-This project uses pnpm for package management:
+4. **Create a feature branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 
-```bash
-# Install pnpm if you haven't already
-npm install -g pnpm
-
-# Install dependencies
-pnpm install
-```
-
-### Create a Feature Branch
-
-Create a new branch for your changes:
+## Development
 
 ```bash
-git checkout -b feature/your-feature-name
-# or
-git checkout -b fix/bug-description
-```
+# Run tests
+pnpm test
 
-### Development
-
-Run the build to compile TypeScript:
-
-```bash
+# Build the package
 pnpm build
 ```
 
-Run tests:
+## Pull Requests
 
-```bash
-pnpm test
-```
+1. Ensure all tests pass before submitting
+2. Follow the existing code style
+3. Update documentation as needed
+4. Provide a clear description of your changes
 
-### Making Changes
+## License
 
-1. Make your changes in the `src/` directory
-2. Add or update tests in `src/__tests__/`
-3. Ensure the build passes and all tests pass
-
-### Submitting a Pull Request
-
-1. Commit your changes with a descriptive message:
-   ```bash
-   git add .
-   git commit -m "feat: add new clipboard function"
-   ```
-
-2. Push to your fork:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-3. Open a Pull Request against the `main` branch of the original repository
-
-4. Fill out the PR template with:
-   - Description of changes
-   - Related issues (if any)
-   - Testing performed
-
-## Code Style
-
-- Use TypeScript with strict mode
-- Follow existing code patterns
-- Add JSDoc comments for public APIs
-- Ensure type safety
-
-## Questions?
-
-If you have questions, feel free to open an issue or reach out through the repository.
-
----
-
-Built at [zovo.one](https://zovo.one) by [theluckystrike](https://github.com/theluckystrike)
+By contributing, you agree that your contributions will be licensed under the MIT License.
